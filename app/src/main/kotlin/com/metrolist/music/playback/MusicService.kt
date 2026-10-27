@@ -4833,10 +4833,12 @@ private fun specFor(fromId: String?, toId: String?): TransitionSpec? =
         crossfadeMessage?.cancel()
         crossfadeMessage = null
         
-        val mediaCrossfadeDuration = crossfadeDuration.toLong()
+        val spec = specFor(player.currentMediaItem?.mediaId, upcomingMediaId())
+val mediaCrossfadeDuration = spec?.durationMs ?: crossfadeDuration.toLong()
 
-        if (!crossfadeEnabled || crossfadeDuration <= 0f || player.duration == C.TIME_UNSET || player.duration <= mediaCrossfadeDuration) return
-        if (crossfadeGapless && isNextItemGapless()) return
+if ((!crossfadeEnabled && spec == null) || mediaCrossfadeDuration <= 0L ||
+    player.duration == C.TIME_UNSET || player.duration <= mediaCrossfadeDuration) return
+if (spec == null && crossfadeGapless && isNextItemGapless()) return
         if (!player.hasNextMediaItem() && player.repeatMode != REPEAT_MODE_ONE) return
 
         val triggerTime = player.duration - mediaCrossfadeDuration
