@@ -4915,6 +4915,7 @@ if (spec == null && crossfadeGapless && isNextItemGapless()) return
             secPlayer.removeListener(secondaryPlayerListener)
             releaseExoPlayer(secPlayer)
             secondaryPlayer = null
+            activeSpec = null
             return
         }
 
@@ -4982,10 +4983,13 @@ if (spec == null && crossfadeGapless && isNextItemGapless()) return
 
         crossfadeJob =
             scope.launch {
-                val speed = fadingPlayer?.playbackParameters?.speed?.coerceAtLeast(0.01f) ?: 1f
-                val duration = (crossfadeDuration / speed).toLong()
-                val steps = 20
-                val stepTime = duration / steps
+                val spec = activeSpec
+val speed = fadingPlayer?.playbackParameters?.speed?.coerceAtLeast(0.01f) ?: 1f
+val fadeMs = spec?.durationMs ?: crossfadeDuration.toLong()
+val duration = (fadeMs / speed).toLong()
+val curve = spec?.curve ?: FadeCurve.QUADRATIC
+val steps = (duration / 50).toInt().coerceIn(20, 400)
+val stepTime = duration / steps
                 val startVolume =
                     try {
                         fadingPlayer?.volume ?: 1f
@@ -4999,9 +5003,7 @@ if (spec == null && crossfadeGapless && isNextItemGapless()) return
                         delay(100)
                     }
 
-                    val progress = i / steps.toFloat()
-                    val fadeIn = 1.0f - (1.0f - progress) * (1.0f - progress)
-                    val fadeOut = (1.0f - progress) * (1.0f - progress)
+                    val (fadeIn, fadeOut) = curve.gains(i / steps.toFloat())
 
                     try {
                         player.volume = startVolume * fadeIn
@@ -5031,6 +5033,7 @@ if (spec == null && crossfadeGapless && isNextItemGapless()) return
         }
         fadingPlayer = null
         crossfadeJob = null
+        activeSpec = null
         isCrossfading = false
         applyEffectiveVolume()
         sleepTimer?.notifySongTransition()
