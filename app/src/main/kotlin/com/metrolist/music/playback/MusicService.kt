@@ -429,6 +429,10 @@ private fun specFor(fromId: String?, toId: String?): TransitionSpec? =
     // Single batch-read of all DataStore preferences needed during onCreate().
     // Populated once at the very top of onCreate() to replace 15+ individual
     // runBlocking reads that were each blocking the main thread.
+    transitionSpecs = mapOf(
+    ("MBb9AntRwY4" to "3ZHPweJDorI") to
+        TransitionSpec(durationMs = 8000, curve = FadeCurve.EQUAL_POWER, nextStartMs = 30_000),
+)
     @Volatile
     private var startupPrefs: Preferences? = null
 
