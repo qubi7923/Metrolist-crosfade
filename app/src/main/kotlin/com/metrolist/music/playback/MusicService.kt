@@ -4881,6 +4881,10 @@ if (spec == null && crossfadeGapless && isNextItemGapless()) return
                 player.nextMediaItemIndex
             }
         if (targetIndex == C.INDEX_UNSET) return
+        activeSpec = specFor(
+    player.currentMediaItem?.mediaId,
+    player.getMediaItemAt(targetIndex).mediaId,
+)
 
         secondaryPlayer = createExoPlayer()
         val secPlayer = secondaryPlayer!!
@@ -4893,7 +4897,7 @@ if (spec == null && crossfadeGapless && isNextItemGapless()) return
         }
 
         secPlayer.setMediaItems(items)
-        secPlayer.seekTo(targetIndex, 0)
+        secPlayer.seekTo(targetIndex, activeSpec?.nextStartMs ?: 0L)
         secPlayer.volume = 0f
 
         secPlayer.setPlaybackParameters(player.playbackParameters)
