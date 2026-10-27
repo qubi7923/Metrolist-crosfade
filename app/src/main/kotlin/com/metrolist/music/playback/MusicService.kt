@@ -312,6 +312,20 @@ class MusicService :
     private var crossfadeGapless = true
     private var crossfadeMessage: PlayerMessage? = null
 
+@Volatile
+private var transitionSpecs: Map<Pair<String, String>, TransitionSpec> = emptyMap()
+private var activeSpec: TransitionSpec? = null
+
+private fun upcomingMediaId(): String? {
+    val idx =
+        if (player.repeatMode == REPEAT_MODE_ONE) player.currentMediaItemIndex
+        else player.nextMediaItemIndex
+    return if (idx == C.INDEX_UNSET) null else player.getMediaItemAt(idx).mediaId
+}
+
+private fun specFor(fromId: String?, toId: String?): TransitionSpec? =
+    if (fromId == null || toId == null) null else transitionSpecs[fromId to toId]
+
     private val secondaryPlayerListener =
         object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
