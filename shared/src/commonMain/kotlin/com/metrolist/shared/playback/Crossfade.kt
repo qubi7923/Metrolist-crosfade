@@ -4,6 +4,7 @@ import com.metrolist.shared.model.SongItem
 import com.metrolist.shared.settings.LoudnessLevel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.Serializable
 import kotlin.math.nextDown
 import kotlin.math.pow
 
@@ -110,12 +111,19 @@ fun playbackCrossfadeDurationMs(
     return minOf(configuredDurationMs.coerceIn(0L, 15_000L), outgoingDurationMs.coerceAtLeast(0L), incomingDurationMs.coerceAtLeast(0L))
 }
 
+@Serializable
 enum class CrossfadeStyle {
     FADE,
     RISE,
     DROP,
     CUT,
 }
+
+@Serializable
+data class PlaylistCrossfadeSettings(
+    val style: CrossfadeStyle,
+    val durationSeconds: Float,
+)
 
 fun playbackCrossfadeGains(
     progress: Float,
