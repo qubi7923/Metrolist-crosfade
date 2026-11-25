@@ -362,7 +362,15 @@ internal class AndroidQueueCoordinator(
         ) {
             return
         }
-        replaceQueueSession(playableSongs, adjustedStartIndex, queueTitle, finite ?: true, playlistPage, radioQueue, playlistId) {
+        replaceQueueSession(
+            playableSongs,
+            adjustedStartIndex,
+            queueTitle,
+            finite ?: true,
+            playlistPage,
+            radioQueue,
+            playlistId,
+        ) {
             if (startVideo && !fromRemote) onVideoSelected(playableSongs[adjustedStartIndex])
             player.setQueue(
                 songs = playableSongs,
