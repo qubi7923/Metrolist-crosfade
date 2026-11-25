@@ -151,6 +151,7 @@ internal class AndroidQueueCoordinator(
             shuffleModeEnabled = persistedQueue.isShuffled,
             volume = 1.0f,
             queueTitle = queueTitleState.value,
+            playlistId = playlistId,
             radioQueueSeedSongId = recommendationSeedSongId,
             radioQueueFinite = isFiniteQueue,
             radioQueue = isRadioQueue,
@@ -193,6 +194,7 @@ internal class AndroidQueueCoordinator(
                 sessionId = state.queueSessionId,
             )
             val restoredPosition = state.currentPosition
+            playlistId = state.playlistId
             isRadioQueue = state.radioQueue || restoredMix
             isExplicitRadioQueue = state.explicitRadioQueue ?: false
             radioQueueContinuation = null
