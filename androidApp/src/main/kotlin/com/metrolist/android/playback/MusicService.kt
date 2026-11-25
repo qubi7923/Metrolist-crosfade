@@ -2943,6 +2943,7 @@ class MusicService :
         startPositionMs: Long = 0L,
         startPlaying: Boolean = true,
         startVideo: Boolean = false,
+        playlistId: String? = null,
     ) {
         playbackBenchmark.cancel()
         queueCoordinator.playQueue(
@@ -2957,6 +2958,7 @@ class MusicService :
             startPositionMs,
             startPlaying,
             startVideo,
+            playlistId,
         )
     }
 
