@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import com.metrolist.shared.generated.resources.*
 import com.metrolist.shared.settings.KeepScreenOnMode
 import com.metrolist.shared.settings.LoudnessLevel
+import com.metrolist.shared.playback.CrossfadeStyle
 import com.metrolist.shared.settings.Settings
 import com.metrolist.shared.ui.icons.MetrolistIcons
 import com.metrolist.shared.utils.formatPlaybackPitch
@@ -35,6 +36,13 @@ internal fun SettingsUiRegistryBuilder.registerPlaybackSettings(host: SharedSett
             SettingsChoice("LOW", stringResource(Res.string.audio_quality_low)),
             SettingsChoice("AUTO", stringResource(Res.string.audio_quality_auto)),
             SettingsChoice("HIGH", stringResource(Res.string.audio_quality_high)),
+        )
+    val crossfadeStyleChoices =
+        listOf(
+            SettingsChoice(CrossfadeStyle.FADE.name, stringResource(Res.string.crossfade_style_fade)),
+            SettingsChoice(CrossfadeStyle.RISE.name, stringResource(Res.string.crossfade_style_rise)),
+            SettingsChoice(CrossfadeStyle.DROP.name, stringResource(Res.string.crossfade_style_drop)),
+            SettingsChoice(CrossfadeStyle.CUT.name, stringResource(Res.string.crossfade_style_cut)),
         )
     val loudnessLevelChoices =
         LoudnessLevel.entries.map { level ->
@@ -261,6 +269,17 @@ internal fun SettingsUiRegistryBuilder.registerPlaybackSettings(host: SharedSett
                 checked = settings.crossfadeEnabled,
             ) {
                 settings.crossfadeEnabled = it
+                host.onSettingChanged(SettingsChangeEffect.AUDIO, null)
+            }
+            choice(
+                id = "crossfadeStyle",
+                title = stringResource(Res.string.crossfade_style),
+                valueLabel = crossfadeStyleChoices.firstOrNull { it.id == settings.crossfadeStyle }?.label,
+                choices = crossfadeStyleChoices,
+                selectedChoiceId = settings.crossfadeStyle,
+                enabled = settings.crossfadeEnabled,
+            ) {
+                settings.crossfadeStyle = it
                 host.onSettingChanged(SettingsChangeEffect.AUDIO, null)
             }
             inlineSlider(
