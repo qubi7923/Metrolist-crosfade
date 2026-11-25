@@ -39,6 +39,7 @@ data class PersistPlayerState(
     val currentMediaItemIndex: Int,
     val playbackState: Int,
     val queueTitle: String? = null,
+    val playlistId: String? = null,
     val queueSongs: List<SongItem> = emptyList(),
     @Serializable(with = StoredQueueSnapshotSerializer::class)
     val queueSnapshot: MusicQueueSnapshot? = null,
