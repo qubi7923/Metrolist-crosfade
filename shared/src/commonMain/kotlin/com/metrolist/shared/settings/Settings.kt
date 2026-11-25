@@ -55,6 +55,7 @@ import com.metrolist.shared.constants.CanvasContentOrderKey
 import com.metrolist.shared.constants.CanvasEnabledSourcesKey
 import com.metrolist.shared.constants.CastEnabledKey
 import com.metrolist.shared.constants.CastVolumeStepKey
+import com.metrolist.shared.constants.CrossfadeStyleKey
 import com.metrolist.shared.constants.ClassicRecommendationsKey
 import com.metrolist.shared.constants.CollectionCoversKey
 import com.metrolist.shared.constants.DatabaseLikesRecoveryVersionKey
@@ -470,6 +471,7 @@ class Settings(
     var crossfadeEnabled by preference(false)
     var crossfadeDuration by preference(10f)
     var crossfadeGapless by preference(true)
+    var crossfadeStyle by preference(CrossfadeStyleKey, CrossfadeStyle.FADE.name)
     var sponsorBlockEnabled by preference(SponsorBlockEnabledKey, false)
     var skipSilence by preference(false)
     var skipSilenceInstant by preference(false)
