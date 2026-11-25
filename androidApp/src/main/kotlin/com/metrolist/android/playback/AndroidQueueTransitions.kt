@@ -133,6 +133,7 @@ internal class AndroidQueueTransitions(
                     )?.let(songs::getOrNull)
                         ?: return@collect
                 val current = player.currentSong.value
+                val playlistMixSettings = queue.playlistId?.let(Settings.shared::playlistCrossfadeSettings)
                 val isGapless =
                     Settings.shared.crossfadeGapless && songsShareAlbum(current, next)
                 val crossfadeDurationMs =
@@ -140,7 +141,10 @@ internal class AndroidQueueTransitions(
                         enabled = Settings.shared.crossfadeEnabled,
                         preserveSameAlbumGapless = Settings.shared.crossfadeGapless,
                         sameAlbum = isGapless,
-                        configuredDurationMs = (Settings.shared.crossfadeDuration * 1_000f).toLong().coerceAtLeast(1_000L),
+                        configuredDurationMs =
+                            ((playlistMixSettings?.durationSeconds ?: Settings.shared.crossfadeDuration) * 1_000f)
+                                .toLong()
+                                .coerceAtLeast(1_000L),
                         outgoingDurationMs = duration,
                         incomingDurationMs = next.duration?.times(1_000L) ?: duration,
                     )
@@ -407,6 +411,11 @@ internal class AndroidQueueTransitions(
                     return@launch
                 }
                 val startPositionMs = player.getRealtimePositionMs()
+                val playlistMixSettings = queue.playlistId?.let(Settings.shared::playlistCrossfadeSettings)
+                val selectedCrossfadeStyle =
+                    playlistMixSettings?.style
+                        ?: CrossfadeStyle.entries.firstOrNull { it.name == Settings.shared.crossfadeStyle }
+                        ?: CrossfadeStyle.FADE
                 var progress = if (crossfadeCompletionGuard.hasConsumedCompletion) 1f else 0f
                 crossfadeController.start(
                     nextSong = nextSong,
@@ -445,10 +454,7 @@ internal class AndroidQueueTransitions(
                                 outgoingHasEnded = crossfadeCompletionGuard.hasConsumedCompletion,
                             ),
                         )
-                    val style =
-                        CrossfadeStyle.entries.firstOrNull { it.name == Settings.shared.crossfadeStyle }
-                            ?: CrossfadeStyle.FADE
-                    val (outgoingGain, incomingGain) = playbackCrossfadeGains(progress, style)
+                    val (outgoingGain, incomingGain) = playbackCrossfadeGains(progress, selectedCrossfadeStyle)
                     player.setCrossfadeVolumes(outgoingGain * 100f, incomingGain * 100f)
                     crossfadeController.update(
                         progress = progress,
