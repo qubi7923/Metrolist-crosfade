@@ -778,7 +778,7 @@ class PlayerConnection(
         playlistId: String,
         title: String,
         shuffle: Boolean = false,
-    ) = playPagedCollection(title, shuffle) {
+    ) = playPagedCollection(title, shuffle, playlistId = playlistId) {
         GlobalYouTubeRepository.instance.run {
             val page = getPlaylistPlaybackPage(playlistId)
             if (shuffle) completePlaylistPage(page, applyContentFilters = false) else page
@@ -833,6 +833,7 @@ class PlayerConnection(
     private fun playPagedCollection(
         title: String,
         shuffle: Boolean,
+        playlistId: String? = null,
         load: suspend () -> PlaylistPage?,
     ) {
         cancelPlaylistRequest()
@@ -854,9 +855,9 @@ class PlayerConnection(
                     if (songs.isEmpty()) {
                         Toast.makeText(context, getString(Res.string.playlist_unavailable), Toast.LENGTH_SHORT).show()
                     } else if (shuffle) {
-                        shuffleQueue(songs, title, finite = true, playlistPage = page)
+                        shuffleQueue(songs, title, finite = true, playlistPage = page, playlistId = playlistId)
                     } else {
-                        playQueue(songs, queueTitle = title, finite = true, playlistPage = page, startVideo = false)
+                        playQueue(songs, queueTitle = title, finite = true, playlistPage = page, startVideo = false, playlistId = playlistId)
                     }
                 } catch (e: CancellationException) {
                     throw e
