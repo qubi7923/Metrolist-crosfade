@@ -235,6 +235,7 @@ val PlaylistPickerSortDirectionKey = "playlistPickerSortDirection"
 val CollectionCoversKey = "collectionCoversJson"
 val PlaylistEditLockKey = "playlistEditLock"
 val PlaylistSongSortingsKey = "playlistSongSortingsJson"
+val PlaylistCrossfadeSettingsJsonKey = "playlistCrossfadeSettingsJson"
 val PlaylistCollectionSortingsKey = "playlistCollectionSortingsJson"
 
 val LibraryViewsByFilterKey = "library_views_by_filter"
