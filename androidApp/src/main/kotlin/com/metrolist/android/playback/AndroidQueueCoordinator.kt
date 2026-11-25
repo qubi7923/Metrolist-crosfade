@@ -81,6 +81,9 @@ internal class AndroidQueueCoordinator(
     private val queueTitleState = MutableStateFlow<String?>(null)
     val queueTitle: StateFlow<String?> = queueTitleState.asStateFlow()
 
+    var playlistId: String? = null
+        private set
+
     private val queueChipsState = MutableStateFlow<List<RadioQueueChip>>(emptyList())
     val queueChips: StateFlow<List<RadioQueueChip>> = queueChipsState.asStateFlow()
 
@@ -258,6 +261,7 @@ internal class AndroidQueueCoordinator(
         recommendationRequestGeneration++
         recommendationSeedSongId = seedSongId
         queueTitleState.value = queueTitle
+        playlistId = null
         queueChipsState.value = emptyList()
         isFiniteQueue = finite
         isRadioQueue = false
@@ -300,11 +304,13 @@ internal class AndroidQueueCoordinator(
         finite: Boolean,
         playlistPage: PlaylistPage? = null,
         radioQueue: Boolean = false,
+        playlistId: String? = null,
         replacement: () -> Unit,
     ) {
         val seed = songs.getOrNull(startIndex) ?: return
         synchronized(queueSessionLock) {
             resetQueueSession(seed.id, queueTitle, finite)
+            this.playlistId = playlistId
             isRadioQueue = radioQueue
             isExplicitRadioQueue = radioQueue
             this.playlistPage = playlistPage
@@ -327,6 +333,7 @@ internal class AndroidQueueCoordinator(
         startPlaying: Boolean = true,
         startVideo: Boolean = false,
         radioQueue: Boolean = false,
+        playlistId: String? = null,
     ) {
         val (playableSongs, adjustedStartIndex) =
             filteredQueueSelection(songs, startIndex, BlockedContent.snapshot()::isBlocked) ?: return
@@ -353,7 +360,7 @@ internal class AndroidQueueCoordinator(
         ) {
             return
         }
-        replaceQueueSession(playableSongs, adjustedStartIndex, queueTitle, finite ?: true, playlistPage, radioQueue) {
+        replaceQueueSession(playableSongs, adjustedStartIndex, queueTitle, finite ?: true, playlistPage, radioQueue, playlistId) {
             if (startVideo && !fromRemote) onVideoSelected(playableSongs[adjustedStartIndex])
             player.setQueue(
                 songs = playableSongs,
