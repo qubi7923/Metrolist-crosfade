@@ -738,7 +738,6 @@ fun PlaylistScreen(
                                 playlistInfo?.title,
                                 finite = true,
                                 playlistPage = page.takeIf { searchQuery.isBlank() },
-                            playlistId = playlist.id,
                                 playlistId = playlistId,
                             )
                         }
@@ -986,6 +985,7 @@ fun PlaylistScreen(
                             playlist.title,
                             finite = true,
                             playlistPage = page.takeIf { searchQuery.isBlank() },
+                            playlistId = playlist.id,
                         )
                         showMenu = false
                     },
