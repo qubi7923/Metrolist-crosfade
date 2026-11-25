@@ -495,7 +495,7 @@ fun PlaylistScreen(
                 withContext(
                     Dispatchers.Default,
                 ) { preparePlaylistPresentation(all, options.copy(listeningTimes = SongMetadataState.listeningTimes)).songs }
-            if (queue.isNotEmpty()) playerConnection?.shuffleQueue(queue, title, finite = true)
+            if (queue.isNotEmpty()) playerConnection?.shuffleQueue(queue, title, finite = true, playlistId = playlistId)
         }
     }
 
@@ -605,8 +605,8 @@ fun PlaylistScreen(
         SongSelectionControls(
             selectedCount = selectedSongs.size,
             selectedSongs = selectedSongs,
-            onPlay = { playerConnection?.playQueue(selectedSongs, 0, playlistInfo?.title, finite = true) },
-            onShuffle = { playerConnection?.shuffleQueue(selectedSongs, playlistInfo?.title, finite = true) },
+            onPlay = { playerConnection?.playQueue(selectedSongs, 0, playlistInfo?.title, finite = true, playlistId = playlistId) },
+            onShuffle = { playerConnection?.shuffleQueue(selectedSongs, playlistInfo?.title, finite = true, playlistId = playlistId) },
             allSelected = selection.allSelected(displayedKeys),
             onDone = selection::exit,
             onSelectAll = { selection.toggleAll(displayedKeys) },
@@ -738,6 +738,8 @@ fun PlaylistScreen(
                                 playlistInfo?.title,
                                 finite = true,
                                 playlistPage = page.takeIf { searchQuery.isBlank() },
+                            playlistId = playlist.id,
+                                playlistId = playlistId,
                             )
                         }
                     },
@@ -764,7 +766,7 @@ fun PlaylistScreen(
                                     }
                                 val startIndex = queue.indexOfPlaylistOccurrence(song)
                                 if (startIndex >= 0) {
-                                    playerConnection?.playQueue(queue, startIndex, title, finite = true, playlistPage = playbackPage)
+                                    playerConnection?.playQueue(queue, startIndex, title, finite = true, playlistPage = playbackPage, playlistId = playlistId)
                                 }
                             }
                         } else {
@@ -774,6 +776,7 @@ fun PlaylistScreen(
                                 playlistInfo?.title,
                                 finite = true,
                                 playlistPage = page,
+                                playlistId = playlistId,
                             )
                         }
                     },
