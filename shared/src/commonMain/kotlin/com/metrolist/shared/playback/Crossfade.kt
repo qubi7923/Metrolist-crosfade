@@ -110,11 +110,27 @@ fun playbackCrossfadeDurationMs(
     return minOf(configuredDurationMs.coerceIn(0L, 15_000L), outgoingDurationMs.coerceAtLeast(0L), incomingDurationMs.coerceAtLeast(0L))
 }
 
-fun playbackCrossfadeGains(progress: Float): Pair<Float, Float> {
+enum class CrossfadeStyle {
+    FADE,
+    RISE,
+    DROP,
+    CUT,
+}
+
+fun playbackCrossfadeGains(
+    progress: Float,
+    style: CrossfadeStyle = CrossfadeStyle.FADE,
+): Pair<Float, Float> {
     if (!progress.isFinite() || progress <= 0f) return 1f to 0f
     if (progress >= 1f) return 0f to 1f
     val t = progress.coerceIn(0f, 1f)
-    val shaped = t * t * t * (t * (t * 6f - 15f) + 10f)
+    val shaped =
+        when (style) {
+            CrossfadeStyle.FADE -> t * t * t * (t * (t * 6f - 15f) + 10f)
+            CrossfadeStyle.RISE -> t * t
+            CrossfadeStyle.DROP -> 1f - (1f - t) * (1f - t)
+            CrossfadeStyle.CUT -> if (t < 0.5f) 0f else 1f
+        }
     return (1f - shaped).coerceAtLeast(0f) to shaped.coerceAtMost(1f.nextDown())
 }
 
