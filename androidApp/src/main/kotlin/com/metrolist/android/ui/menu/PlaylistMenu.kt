@@ -32,6 +32,7 @@ import com.metrolist.shared.generated.resources.playlist_mix_custom_settings
 import com.metrolist.shared.generated.resources.playlist_mix_global_settings
 import com.metrolist.shared.generated.resources.playlist_mix_settings
 import com.metrolist.shared.generated.resources.save
+import com.metrolist.shared.generated.resources.seconds
 import com.metrolist.shared.model.PlaylistItem
 import com.metrolist.shared.model.SongItem
 import com.metrolist.shared.playback.CrossfadeStyle
@@ -74,7 +75,11 @@ fun PlaylistMenu(
     val savedMixSettings = Settings.shared.playlistCrossfadeSettings(playlist.id)
     val mixDescription =
         savedMixSettings?.let { mix ->
-            "${playlistMixStyleLabel(mix.style)} · ${pluralStringResource(Res.plurals.seconds, mix.durationSeconds.roundToInt(), mix.durationSeconds.roundToInt())}"
+            "${playlistMixStyleLabel(mix.style)} · ${pluralStringResource(
+                Res.plurals.seconds,
+                mix.durationSeconds.roundToInt(),
+                mix.durationSeconds.roundToInt(),
+            )}"
         } ?: stringResource(Res.string.playlist_mix_global_settings)
     val download = rememberMediaDownloadAction(playlist, onDismiss, onDownload, loadSongs)
     val pin = rememberSpeedDialToggle(playlist)
