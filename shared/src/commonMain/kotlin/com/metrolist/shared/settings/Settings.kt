@@ -216,6 +216,7 @@ import com.metrolist.shared.model.LyricsProvider
 import com.metrolist.shared.model.PlaylistPickerSort
 import com.metrolist.shared.model.PlaylistSongSort
 import com.metrolist.shared.model.SortDirection
+import com.metrolist.shared.playback.CrossfadeStyle
 import com.metrolist.shared.playback.SleepTimerDefaults
 import com.metrolist.shared.youtube.playback.PlaybackNetworkState
 import com.metrolist.shared.youtube.playback.PlaybackNetworkStateStore
