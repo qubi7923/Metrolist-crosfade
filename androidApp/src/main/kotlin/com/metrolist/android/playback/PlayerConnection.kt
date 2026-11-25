@@ -857,7 +857,14 @@ class PlayerConnection(
                     } else if (shuffle) {
                         shuffleQueue(songs, title, finite = true, playlistPage = page, playlistId = playlistId)
                     } else {
-                        playQueue(songs, queueTitle = title, finite = true, playlistPage = page, startVideo = false, playlistId = playlistId)
+                        playQueue(
+                            songs,
+                            queueTitle = title,
+                            finite = true,
+                            playlistPage = page,
+                            startVideo = false,
+                            playlistId = playlistId,
+                        )
                     }
                 } catch (e: CancellationException) {
                     throw e
@@ -923,7 +930,17 @@ class PlayerConnection(
             return
         }
         if (deferUntilConnected {
-                playQueue(songs, startIndex, queueTitle, finite, shuffleModeEnabled, playlistPage, songsOnly, startVideo, playlistId)
+                playQueue(
+                    songs,
+                    startIndex,
+                    queueTitle,
+                    finite,
+                    shuffleModeEnabled,
+                    playlistPage,
+                    songsOnly,
+                    startVideo,
+                    playlistId,
+                )
             }
         ) {
             return
