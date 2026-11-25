@@ -58,7 +58,6 @@ import com.metrolist.shared.constants.CastVolumeStepKey
 import com.metrolist.shared.constants.ClassicRecommendationsKey
 import com.metrolist.shared.constants.CollectionCoversKey
 import com.metrolist.shared.constants.CrossfadeStyleKey
-import com.metrolist.shared.constants.PlaylistCrossfadeSettingsJsonKey
 import com.metrolist.shared.constants.DatabaseLikesRecoveryVersionKey
 import com.metrolist.shared.constants.DefaultOpenTabKey
 import com.metrolist.shared.constants.DeletedPlaylistIdsJsonKey
@@ -160,6 +159,7 @@ import com.metrolist.shared.constants.PlaybackSpeedKey
 import com.metrolist.shared.constants.PlayerConfigRemoteEtagKey
 import com.metrolist.shared.constants.PlayerConfigRemoteSourceUrlKey
 import com.metrolist.shared.constants.PlaylistCollectionSortingsKey
+import com.metrolist.shared.constants.PlaylistCrossfadeSettingsJsonKey
 import com.metrolist.shared.constants.PlaylistEditLockKey
 import com.metrolist.shared.constants.PlaylistPickerSortDirectionKey
 import com.metrolist.shared.constants.PlaylistPickerSortKey
