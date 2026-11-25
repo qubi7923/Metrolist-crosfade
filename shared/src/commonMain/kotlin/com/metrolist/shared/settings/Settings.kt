@@ -57,6 +57,7 @@ import com.metrolist.shared.constants.CastEnabledKey
 import com.metrolist.shared.constants.CastVolumeStepKey
 import com.metrolist.shared.constants.ClassicRecommendationsKey
 import com.metrolist.shared.constants.CrossfadeStyleKey
+import com.metrolist.shared.constants.PlaylistCrossfadeSettingsJsonKey
 import com.metrolist.shared.constants.CollectionCoversKey
 import com.metrolist.shared.constants.DatabaseLikesRecoveryVersionKey
 import com.metrolist.shared.constants.DefaultOpenTabKey
@@ -217,6 +218,7 @@ import com.metrolist.shared.model.PlaylistPickerSort
 import com.metrolist.shared.model.PlaylistSongSort
 import com.metrolist.shared.model.SortDirection
 import com.metrolist.shared.playback.CrossfadeStyle
+import com.metrolist.shared.playback.PlaylistCrossfadeSettings
 import com.metrolist.shared.playback.SleepTimerDefaults
 import com.metrolist.shared.youtube.playback.PlaybackNetworkState
 import com.metrolist.shared.youtube.playback.PlaybackNetworkStateStore
@@ -821,6 +823,7 @@ class Settings(
     }
 
     private var playlistSongSortingsJson by preference(PlaylistSongSortingsKey, "{}")
+    private var playlistCrossfadeSettingsJson by preference(PlaylistCrossfadeSettingsJsonKey, "{}")
     private var playlistCollectionSortingsJson by preference(PlaylistCollectionSortingsKey, "{}")
     var visibleAutoPlaylists by preference("liked,downloaded,top,uploaded,cached")
     var likedSongsJson by preference("[]")
@@ -933,6 +936,26 @@ class Settings(
 
     private fun playlistCollectionSortings(): Map<String, SavedPlaylistCollectionSorting> =
         runCatching { Json.decodeFromString<Map<String, SavedPlaylistCollectionSorting>>(playlistCollectionSortingsJson) }
+            .getOrDefault(emptyMap())
+
+    fun playlistCrossfadeSettings(playlistId: String): PlaylistCrossfadeSettings? {
+        require(playlistId.isNotBlank())
+        return playlistCrossfadeSettings()[playlistId]
+    }
+
+    fun setPlaylistCrossfadeSettings(
+        playlistId: String,
+        value: PlaylistCrossfadeSettings?,
+    ) {
+        require(playlistId.isNotBlank())
+        require(value == null || (value.durationSeconds.isFinite() && value.durationSeconds in 1f..15f))
+        val settings = playlistCrossfadeSettings()
+        playlistCrossfadeSettingsJson =
+            Json.encodeToString(if (value == null) settings - playlistId else settings + (playlistId to value))
+    }
+
+    private fun playlistCrossfadeSettings(): Map<String, PlaylistCrossfadeSettings> =
+        runCatching { Json.decodeFromString<Map<String, PlaylistCrossfadeSettings>>(playlistCrossfadeSettingsJson) }
             .getOrDefault(emptyMap())
 
     fun librarySorting(filter: LibraryFilterType): LibrarySorting =
