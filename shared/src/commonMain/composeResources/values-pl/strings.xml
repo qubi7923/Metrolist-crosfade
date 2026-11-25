@@ -1131,6 +1131,15 @@
     </plurals>
     <string name="beta_tag">[BETA]</string>
     <string name="crossfade">Płynne przejście</string>
+    <string name="crossfade_style">Profil przejścia</string>
+    <string name="crossfade_style_fade">Płynne</string>
+    <string name="crossfade_style_rise">Narastanie</string>
+    <string name="crossfade_style_drop">Szybkie wejście</string>
+    <string name="crossfade_style_cut">Cięcie</string>
+    <string name="playlist_mix_settings">Ustawienia miksowania playlisty</string>
+    <string name="playlist_mix_custom_settings">Użyj własnych ustawień przejścia</string>
+    <string name="playlist_mix_global_settings">Używane są globalne ustawienia przejścia odtwarzacza</string>
+    <string name="playlist_mix_crossfade_disabled">Włącz płynne przejście w ustawieniach odtwarzacza, aby używać tych efektów.</string>
     <string name="crossfade_duration">Czas trwania przejścia</string>
     <string name="crossfade_gapless">Wyłącz dla albumów bez przerw</string>
     <string name="crossfade_gapless_desc">Nie stosuj płynnego przejścia między utworami, jeśli album jest bez przerw</string>
