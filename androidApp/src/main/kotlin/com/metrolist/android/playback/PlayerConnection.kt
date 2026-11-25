@@ -876,6 +876,7 @@ class PlayerConnection(
         finite: Boolean = false,
         playlistPage: PlaylistPage? = null,
         songsOnly: Boolean = false,
+        playlistId: String? = null,
     ) {
         val playableSongs = BlockedContent.filterPlayableSongs(songs)
         if (playableSongs.isEmpty()) return
@@ -888,6 +889,7 @@ class PlayerConnection(
             playlistPage = playlistPage,
             songsOnly = songsOnly,
             startVideo = false,
+            playlistId = playlistId,
         )
     }
 
@@ -900,6 +902,7 @@ class PlayerConnection(
         playlistPage: PlaylistPage? = null,
         songsOnly: Boolean = false,
         startVideo: Boolean = false,
+        playlistId: String? = null,
     ) {
         if (songs.any { it.isUnavailable }) {
             val queue = MusicQueue().apply { setQueue(songs, startIndex) }
@@ -913,12 +916,13 @@ class PlayerConnection(
                     playlistPage,
                     songsOnly,
                     startVideo,
+                    playlistId,
                 )
             }
             return
         }
         if (deferUntilConnected {
-                playQueue(songs, startIndex, queueTitle, finite, shuffleModeEnabled, playlistPage, songsOnly, startVideo)
+                playQueue(songs, startIndex, queueTitle, finite, shuffleModeEnabled, playlistPage, songsOnly, startVideo, playlistId)
             }
         ) {
             return
@@ -950,6 +954,7 @@ class PlayerConnection(
                                 shuffleModeEnabled,
                                 songsOnly = songsOnly,
                                 startVideo = startVideo,
+                                playlistId = playlistId,
                             )
                         }
                     } catch (e: CancellationException) {
@@ -987,6 +992,7 @@ class PlayerConnection(
             songsOnly = songsOnly,
             startPlaying = localSongChangeStartsPlayback(),
             startVideo = startVideo,
+            playlistId = playlistId,
         )
     }
 
