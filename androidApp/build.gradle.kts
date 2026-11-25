@@ -261,7 +261,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.metrolist.music"
+        applicationId = "com.metrolist.music.mix"
         minSdk = 24
         targetSdk = 37
         versionCode = 155
@@ -271,7 +271,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField("Long", "DISCORD_APP_ID", "1447278780795064401L")
-        buildConfigField("Boolean", "UPDATER_ENABLED", "true")
+        buildConfigField("Boolean", "UPDATER_ENABLED", "false")
         buildConfigField("String", "BUNDLED_LANGUAGE_TAGS", "\"${bundledLanguageTags.joinToString(",")}\"")
     }
 
@@ -302,7 +302,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             ndk.debugSymbolLevel = "FULL"
-            manifestPlaceholders["appLabel"] = "Metrolist"
+            manifestPlaceholders["appLabel"] = "Metrolist Mix"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
