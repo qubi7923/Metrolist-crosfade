@@ -605,8 +605,23 @@ fun PlaylistScreen(
         SongSelectionControls(
             selectedCount = selectedSongs.size,
             selectedSongs = selectedSongs,
-            onPlay = { playerConnection?.playQueue(selectedSongs, 0, playlistInfo?.title, finite = true, playlistId = playlistId) },
-            onShuffle = { playerConnection?.shuffleQueue(selectedSongs, playlistInfo?.title, finite = true, playlistId = playlistId) },
+            onPlay = {
+                playerConnection?.playQueue(
+                    selectedSongs,
+                    0,
+                    playlistInfo?.title,
+                    finite = true,
+                    playlistId = playlistId,
+                )
+            },
+            onShuffle = {
+                playerConnection?.shuffleQueue(
+                    selectedSongs,
+                    playlistInfo?.title,
+                    finite = true,
+                    playlistId = playlistId,
+                )
+            },
             allSelected = selection.allSelected(displayedKeys),
             onDone = selection::exit,
             onSelectAll = { selection.toggleAll(displayedKeys) },
@@ -765,7 +780,14 @@ fun PlaylistScreen(
                                     }
                                 val startIndex = queue.indexOfPlaylistOccurrence(song)
                                 if (startIndex >= 0) {
-                                    playerConnection?.playQueue(queue, startIndex, title, finite = true, playlistPage = playbackPage, playlistId = playlistId)
+                                    playerConnection?.playQueue(
+                                        queue,
+                                        startIndex,
+                                        title,
+                                        finite = true,
+                                        playlistPage = playbackPage,
+                                        playlistId = playlistId,
+                                    )
                                 }
                             }
                         } else {
