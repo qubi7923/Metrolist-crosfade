@@ -10,8 +10,8 @@ import com.metrolist.shared.model.SongItem
 import com.metrolist.shared.model.canSwitchToAudioTrack
 import com.metrolist.shared.model.isPodcast
 import com.metrolist.shared.model.isVideoSong
-import com.metrolist.shared.playback.PlaybackCrossfadeController
 import com.metrolist.shared.playback.CrossfadeStyle
+import com.metrolist.shared.playback.PlaybackCrossfadeController
 import com.metrolist.shared.playback.SleepTimerController
 import com.metrolist.shared.playback.ffmpeg.DirectPlaybackCache
 import com.metrolist.shared.playback.playbackCrossfadeDurationMs
@@ -445,7 +445,9 @@ internal class AndroidQueueTransitions(
                                 outgoingHasEnded = crossfadeCompletionGuard.hasConsumedCompletion,
                             ),
                         )
-                    val style = CrossfadeStyle.entries.firstOrNull { it.name == Settings.shared.crossfadeStyle } ?: CrossfadeStyle.FADE
+                    val style =
+                        CrossfadeStyle.entries.firstOrNull { it.name == Settings.shared.crossfadeStyle }
+                            ?: CrossfadeStyle.FADE
                     val (outgoingGain, incomingGain) = playbackCrossfadeGains(progress, style)
                     player.setCrossfadeVolumes(outgoingGain * 100f, incomingGain * 100f)
                     crossfadeController.update(
